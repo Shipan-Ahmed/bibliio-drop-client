@@ -1,6 +1,7 @@
 import { Merriweather, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 // Configure the serif heading font
 const merriweather = Merriweather({
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
         <main className="flex-grow  ">
           {children}
         </main>
+        <Footer/>
       </body>
     </html>
   );
