@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
       data-theme="light" 
       className={`${merriweather.variable} ${inter.variable} h-full antialiased font-body`}
     >
-      <body className="min-h-full text-neutral flex flex-col ">
+      <body className=" text-neutral flex flex-col ">
         <Navbar/>
         <main className="flex-grow  ">
           {children}
