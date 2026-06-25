@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import NavLink from './NavLink';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { ImCross } from 'react-icons/im';
@@ -9,25 +9,23 @@ import { Avatar, Button } from '@heroui/react';
 import { useState } from 'react';
 import Image from 'next/image';
 import { FiLogOut } from 'react-icons/fi';
+import { signOut, useSession } from '../lib/auth-client';
 
 const Navbar = () => {
+    const router = useRouter();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const pathname = usePathname();
 
-    // Mock Session data matching Better Auth schemas
-    // Change role to "user", "librarian", "admin" or null to verify all UI states
-    let user = {
-        name: 'Jane Doe',
-        image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100',
-        role: 'librarian'
-    };
-    user = null; // Uncomment to simulate unauthenticated state
+    const { data, isPending } = useSession();
+    if (isPending) return <div className='text-center py-4'><div><span className="loading loading-spinner text-error"></span></div></div>;
+    const user = data?.user ;
+    console.log('Navbar user:', user);
 
-    const signOut = async () => {
-        console.log("Clearing Better Auth session context...");
-    };
+    if(pathname.includes('/dashboard')) {
+        return null; // Don't render the navbar on dashboard pages
+    }
 
-    // Consolidated navigation endpoints
+   
     const links = (
         <>
             <li><NavLink href='/'>Home</NavLink></li>
@@ -37,6 +35,11 @@ const Navbar = () => {
             )}
         </>
     );
+
+    // const signOut = async () => {
+    //     await authClient.signOut();
+    //     router.push("/");
+    // }
 
     return (
         <header className='bg-base-100 border-b border-gray-100 shadow-sm sticky top-0 z-50 '>
@@ -114,7 +117,7 @@ const Navbar = () => {
                                     </span>
                                 </li>
                                 <li><Link href={`/dashboard/${user.role}`}>Dashboard</Link></li>
-                                <li><button onClick={signOut} className="text-error"><FiLogOut size={14} />  Sign Out</button></li>
+                                <li><button onClick={() => signOut()} className="text-error"><FiLogOut size={14} />  Sign Out</button></li>
                             </ul>
                         </div>
                     ) : (

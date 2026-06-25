@@ -5,8 +5,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 import { FiMail, FiLock, FiArrowRight } from "react-icons/fi";
+import { authClient } from "@/src/lib/auth-client";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
+    const router = useRouter();
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -26,14 +30,16 @@ export default function LoginPage() {
 
         try {
             // Hook this block straight into your Better Auth instance:
-            // const res = await authClient.signIn.email({
-            //   email: formData.email,
-            //   password: formData.password,
-            //   callbackURL: "/" 
-            // });
+            const res = await authClient.signIn.email({
+              email: formData.email,
+              password: formData.password,
+              callbackURL: "/" 
+            });
 
             console.log("Credentials match found, performing session redirection:", formData);
             setFormData({ email: "", password: "" });
+            toast.success("Sign in successfull!");
+            router.push("/");
         } catch (err) {
             setError(err.message || "Invalid email or password combination.");
         } finally {
@@ -43,7 +49,7 @@ export default function LoginPage() {
 
     const handleGoogleLogin = async () => {
         // Hook into Better Auth Google Provider configuration:
-        // await authClient.signIn.social({ provider: "google" });
+        await authClient.signIn.social({ provider: "google" });
         console.log("Redirecting session context via Better Auth Google OAuth...");
     };
 

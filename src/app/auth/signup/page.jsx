@@ -2,25 +2,37 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 import { FiUser, FiMail, FiLock, FiCamera, FiBookOpen, FiShield } from "react-icons/fi";
+import { authClient } from "@/src/lib/auth-client";
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
+    const router = useRouter();
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
         password: "",
         confirmPassword: "",
-        photoUrl: "",
-        role: "user", // Default option: User (Reader)
+        role: "reader",
     });
 
+    // 1. Separate state to track the locally selected image file
+    const [imageFile, setImageFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    // 2. Handle file input selection changes
+    const handleFileChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setImageFile(e.target.files[0]);
+        }
     };
 
     const handleRoleSelect = (selectedRole) => {
@@ -31,51 +43,84 @@ export default function RegisterPage() {
         e.preventDefault();
         setError("");
 
-        // Front-end Validation Guard
         if (formData.password !== formData.confirmPassword) {
             setError("Passwords do not match!");
             return;
         }
 
+        if (!imageFile) {
+            setError("Please select an avatar image to upload.");
+            return;
+        }
+
         try {
             setLoading(true);
-            
 
-            // Here you will hook into your Better Auth client instance:
-            // await authClient.signUp.email({
-            //   email: formData.email,
-            //   password: formData.password,
-            //   name: formData.fullName,
-            //   image: formData.photoUrl,
-            //   data: { role: formData.role }
-            // });
+            // 3. Upload the image file to ImgBB first
+            const imgBbFormData = new FormData();
+            imgBbFormData.append("image", imageFile);
+            console.log("Uploading image to ImgBB:", imageFile.name);
 
-            console.log("Registration payload submitted successfully:", formData);
+            // Replace "YOUR_IMGBB_API_KEY" with your real key string
+            const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+
+            const imgBbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+                method: "POST",
+                body: imgBbFormData,
+            });
+
+            const imgBbData = await imgBbResponse.json();
+
+            if (!imgBbData.success) {
+                throw new Error("Image upload to ImgBB failed.");
+            }
+
+            // Extract the generated text URL from ImgBB payload response
+            const hostedPhotoUrl = imgBbData.data.url;
+
+            // 4. Hook cleanly into Better Auth client instance using the generated URL
+           const {data, err} =  await authClient.signUp.email({
+                email: formData.email,
+                password: formData.password,
+                name: formData.fullName,
+                image: hostedPhotoUrl, // Passed dynamic string path here
+                role: formData.role 
+           });
+            console.log("data: ", data);
+            if (err) {
+                toast.error("Sign up failed: " + error.message);
+            }
             setFormData({
                 fullName: "",
                 email: "",
                 password: "",
                 confirmPassword: "",
-                photoUrl: "",
-                role: "user",
+                role: "reader",
             });
+            setImageFile(null);
+            if (data) {
+                
+                toast.success("Account created successfully!");
+                router.push("/");
+            }
 
         } catch (err) {
             setError(err.message || "An authentication error occurred.");
+            toast.error(err.message || "Failed to create account.");
         } finally {
             setLoading(false);
         }
     };
 
     const handleGoogleLogin = async () => {
-        // Hook into Better Auth Google OAuth:
-        // await authClient.signIn.social({ provider: "google" });
-        console.log("Initiating Google OAuth via Better Auth...");
+        await authClient.signIn.social({
+            provider: "google",
+            callbackURL: "/"
+        });
     };
 
     return (
         <div className="min-h-screen bg-base-100 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 font-body">
-            {/* Decorative clean background patterns */}
             <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#0f4c43_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
 
             <motion.div
@@ -126,7 +171,6 @@ export default function RegisterPage() {
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
-
                         {/* Full Name Input */}
                         <div>
                             <label className="block text-xs font-semibold uppercase tracking-wider text-neutral/70 mb-1.5">Full Name</label>
@@ -165,21 +209,20 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-                        {/* Photo URL Input Block */}
+                        {/* Updated Avatar Upload Input File Field */}
                         <div>
-                            <label className="block text-xs font-semibold uppercase tracking-wider text-neutral/70 mb-1.5">Avatar Image URL</label>
+                            <label className="block text-xs font-semibold uppercase tracking-wider text-neutral/70 mb-1.5">Upload Avatar Image</label>
                             <div className="relative">
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-neutral/40">
                                     <FiCamera size={16} />
                                 </span>
                                 <input
                                     type="file"
-                                    name="photoUrl"
+                                    name="imageFile"
+                                    accept="image/*"
                                     required
-                                    value={formData.photoUrl}
-                                    onChange={handleChange}
-                                    placeholder="https://imgbb.com/your-avatar.jpg"
-                                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-primary text-sm transition-colors bg-gray-50/50"
+                                    onChange={handleFileChange}
+                                    className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:border-primary text-xs file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 bg-gray-50/50 cursor-pointer"
                                 />
                             </div>
                         </div>
@@ -200,6 +243,7 @@ export default function RegisterPage() {
                                         onChange={handleChange}
                                         placeholder="••••••••"
                                         className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-primary text-sm transition-colors bg-gray-50/50"
+                                        
                                     />
                                 </div>
                             </div>
@@ -223,7 +267,7 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-                        {/* Interactive Role Assignment Selection Requirement */}
+                        {/* Role Assignment Selection */}
                         <div>
                             <label className="block text-xs font-semibold uppercase tracking-wider text-neutral/70 mb-2">
                                 Select Your Account Role
@@ -231,22 +275,22 @@ export default function RegisterPage() {
                             <div className="grid grid-cols-2 gap-3">
                                 <button
                                     type="button"
-                                    onClick={() => handleRoleSelect("user")}
-                                    className={`flex items-center justify-center gap-2 p-3 rounded-xl border text-xs font-semibold transition-all ${formData.role === "user"
-                                            ? "border-primary bg-primary/5 text-primary shadow-sm"
-                                            : "border-gray-200 text-neutral/60 hover:bg-gray-50"
+                                    onClick={() => handleRoleSelect("reader")}
+                                    className={`flex items-center justify-center gap-2 p-3 rounded-xl border text-xs font-semibold transition-all ${formData.role === "reader"
+                                        ? "border-primary bg-primary/5 text-primary shadow-sm"
+                                        : "border-gray-200 text-neutral/60 hover:bg-gray-50"
                                         }`}
                                 >
                                     <FiBookOpen size={14} />
-                                    <span>User (Reader)</span>
+                                    <span>Reader</span>
                                 </button>
 
                                 <button
                                     type="button"
                                     onClick={() => handleRoleSelect("librarian")}
                                     className={`flex items-center justify-center gap-2 p-3 rounded-xl border text-xs font-semibold transition-all ${formData.role === "librarian"
-                                            ? "border-primary bg-primary/5 text-primary shadow-sm"
-                                            : "border-gray-200 text-neutral/60 hover:bg-gray-50"
+                                        ? "border-primary bg-primary/5 text-primary shadow-sm"
+                                        : "border-gray-200 text-neutral/60 hover:bg-gray-50"
                                         }`}
                                 >
                                     <FiShield size={14} />
@@ -255,7 +299,6 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-                        {/* Submit Action Button */}
                         <button
                             type="submit"
                             disabled={loading}
@@ -265,7 +308,6 @@ export default function RegisterPage() {
                         </button>
                     </form>
 
-                    {/* Social Auth Separator Line */}
                     <div className="relative my-5">
                         <div className="absolute inset-0 flex items-center">
                             <div className="w-full border-t border-gray-200"></div>
@@ -275,7 +317,6 @@ export default function RegisterPage() {
                         </div>
                     </div>
 
-                    {/* Google Social Login Integration Trigger */}
                     <button
                         type="button"
                         onClick={handleGoogleLogin}
@@ -285,7 +326,6 @@ export default function RegisterPage() {
                         <span>Sign up with Google</span>
                     </button>
 
-                    {/* Redirect to Login Link */}
                     <p className="text-center text-xs text-neutral/60 mt-5">
                         Already have an account?{" "}
                         <Link href="/auth/signin" className="text-primary font-bold hover:underline">

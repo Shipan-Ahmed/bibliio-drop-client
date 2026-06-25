@@ -1,10 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import { RiTwitterXFill } from "react-icons/ri"; // Modern X logo matching the requirements
 
 export default function Footer() {
+
+
+    const pathname = usePathname();
+    if (pathname.includes('/dashboard')) {
+        return null; // Don't render the navbar on dashboard pages
+    }
+
     const currentYear = new Date().getFullYear();
 
     // Prevents page reloads during form submission placeholder test
