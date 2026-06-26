@@ -18,9 +18,40 @@ const ManageInventoryPage =  () => {
 
     console.log("All books for the current librarian:", allBooks);
 
-    const handleDeleteData = () => {
-        " "
+    const handleDeleteData = async (bookId) => {
+        // Implementation for deleting data
+        const confirmed = window.confirm("Are you sure you want to delete this book?");
+        if (!confirmed) return;
+        console.log("Deleting book with ID:", bookId);
+        
+        try {
+            const res = await fetch(`http://localhost:3002/api/books/${bookId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await res.json();
+            console.log("Delete response:", data);
+            if (!res.ok) {
+                throw new Error(`Failed to delete book with ID ${bookId}`);
+            }
+            if(data.success) {
+                // Update the state to remove the deleted book from the list
+                setAllBooks(prevBooks => prevBooks.filter(book => book._id !== bookId));
+            }
+        } catch (error) {
+            console.error('Error deleting book:', error);
+        }
     }
+
+    // const handleEditData = (bookId) => {
+    //     // Implementation for editing data
+    //     console.log("Editing book with ID:", bookId);
+    //     // You can navigate to an edit page or open a modal for editing
+    //     // Example: router.push(`/edit-book/${bookId}`);
+       
+    // }
 
     return (
         <div className="p-4 space-y-4">
@@ -51,7 +82,7 @@ const ManageInventoryPage =  () => {
                                                 </button>
                                             </Table.Cell>
                                             <Table.Cell>
-                                                <button onClick={handleDeleteData} className="btn btn-ghost bg-danger/10 hover:bg-danger/20">
+                                                <button onClick={() => handleDeleteData(book._id)} className="btn btn-ghost bg-danger/10 hover:bg-danger/20">
                                                     <MdDelete className="text-danger" />
                                                 </button>
                                             </Table.Cell>
