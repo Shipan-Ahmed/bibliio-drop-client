@@ -60,3 +60,85 @@ Browse Here: btn btn-outline
 Log Out: btn btn-neutral
 
 Delete: btn btn-error
+
+
+
+
+
+
+1. Science Fiction
+Book Name: Automatic Noodle
+
+Author: Annalee Newitz
+
+Category: ScienceFiction
+
+Description: A smart, fast-paced cyberpunk tale set in a tech-driven future where automated systems and street-level tech operators collide over control of a city's network.
+
+Suggested Delivery Fee: 3.50
+
+2. Mystery & Thriller
+Book Name: Dear Debbie
+
+Author: Freida McFadden
+
+Category: Mystery
+
+Description: Debbie Mullen is an advice columnist who has reached her breaking point. A twisty, dark domestic thriller about what happens when an ordinary woman decides to stop being reasonable and takes matters into her own hands.
+
+Suggested Delivery Fee: 2.99
+
+3. Non-Fiction
+Book Name: Everything Is Tuberculosis
+
+Author: John Green
+
+Category: Non-Fiction
+
+Description: A compelling history of humanity's deadliest infection. The author blends deep scientific reporting with urgent global health questions, showing how human inequalities affect medical history.
+
+Suggested Delivery Fee: 4.00
+
+4. Fantasy
+Book Name: The Knight and the Moth
+
+Author: Rachel Gillig
+
+Category: Fantasy
+
+Description: A sweeping, gothic fantasy filled with dangerous magic, ancient curses, and a high-stakes romance that keeps you guessing until the final page.
+
+Suggested Delivery Fee: 3.25
+
+5. Romance
+Book Name: I Think They Love You
+
+Author: Julian Winters
+
+Category: Romance
+
+Description: A charming and heartwarming contemporary romantic comedy exploring modern relationships, secondary chances, and the beautiful chaos of finding true connection.
+
+Suggested Delivery Fee: 2.50
+
+6. History & Historical Fiction
+Book Name: The Last Witch
+
+Author: C. J. Cooke
+
+Category: History
+
+Description: Set against a haunting historical backdrop, this atmospheric tale explores local folk stories, systemic paranoia, and the resilient bonds of a family surviving a historical witch trial era.
+
+Suggested Delivery Fee: 3.75
+
+7. Science Fiction / Alternate History
+Book Name: Yesteryear
+
+Author: Caro Claire Burke
+
+Category: ScienceFiction
+
+Description: A modern social media influencer suddenly wakes up stuck in the brutal physical reality of 1855. She must figure out if it is a twisted reality TV show, a hoax, or genuine time travel.
+
+Suggested Delivery Fee: 3.00
