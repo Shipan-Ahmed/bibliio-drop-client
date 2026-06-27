@@ -12,7 +12,7 @@ const BrowseBook = async () => {
     console.log("Fetched books from API:", books);
     
     return (
-        <div className='min-h-screen'>
+        <div className='min-h-screen container mx-auto'>
             <h1 className='text-3xl font-bold text-center my-4'>All Books</h1>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4'>
                 {books.map((book) => (
