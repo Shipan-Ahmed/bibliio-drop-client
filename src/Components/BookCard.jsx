@@ -52,9 +52,8 @@ const BookCard = ({ book }) => {
 
             {/* View Details Action Navigation Link */}
             <div className="px-5 pb-5 pt-1">
-                <Link href={`/browse-books/${_id}`} passHref legacyBehavior>
+                <Link href={`/browse-books/${_id}`} className="w-full">
                     <Button
-                        as="a"
                         color="primary"
                         variant="flat"
                         className="w-full font-semibold rounded-xl bg-primary/10 hover:bg-primary text-primary hover:text-white transition-all duration-300 text-center block transform active:scale-[0.98]"

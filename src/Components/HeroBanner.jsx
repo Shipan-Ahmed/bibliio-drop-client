@@ -67,7 +67,7 @@ export default function HeroBanner() {
                     {/* Call to Action Button */}
                     <motion.div variants={fadeInUp} className="pt-4">
                         <Link
-                            href="/browse"
+                            href="/browse-books"
                             className="inline-flex items-center gap-3 bg-secondary hover:bg-[#c59262] text-neutral font-body font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-secondary/20 transition-all duration-300 transform hover:-translate-y-0.5 group"
                         >
                             <span>Browse Books</span>
