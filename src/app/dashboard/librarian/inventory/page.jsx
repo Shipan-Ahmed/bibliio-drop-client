@@ -1,8 +1,9 @@
  'use client';
 import React, { useEffect, useState } from 'react';
-import { Table } from "@heroui/react";
-import { MdDelete, MdEdit } from 'react-icons/md';
+import { Table, Tooltip } from "@heroui/react";
+import { MdDelete, MdEdit, MdEditOff } from 'react-icons/md';
 import { getData } from '@/src/lib/action/api';
+import { Button } from '@heroui/react';
 
 
 const ManageInventoryPage =  () => {
@@ -45,13 +46,33 @@ const ManageInventoryPage =  () => {
         }
     }
 
-    // const handleEditData = (bookId) => {
-    //     // Implementation for editing data
-    //     console.log("Editing book with ID:", bookId);
-    //     // You can navigate to an edit page or open a modal for editing
-    //     // Example: router.push(`/edit-book/${bookId}`);
-       
-    // }
+    const handleUnpublish = async (bookId) => {
+        // Implementation for unpublishing data
+        console.log("Unpublishing book with ID:", bookId);
+        // i want to change the status of the book to "Unpublished" in the database
+        try {
+            const res = await fetch(`http://localhost:3002/api/books/${bookId}/unpublish`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: 'Unpublished' })
+            });
+            const data = await res.json();
+            console.log("Unpublish response:", data);
+            if (!res.ok) {
+                throw new Error(`Failed to unpublish book with ID ${bookId}`);
+            }
+            if(data.success) {
+                // Update the state to reflect the unpublished status
+                setAllBooks(prevBooks => prevBooks.map(book => 
+                    book._id === bookId ? { ...book, status: 'Unpublished' } : book
+                ));
+            }
+        } catch (error) {
+            console.error('Error unpublishing book:', error);
+        }
+    }
 
     return (
         <div className="p-4 space-y-4">
@@ -64,8 +85,7 @@ const ManageInventoryPage =  () => {
                             <Table.Column>Category</Table.Column>
                             <Table.Column>Delivery Fee</Table.Column>
                             <Table.Column>Status</Table.Column>
-                            <Table.Column>Edit</Table.Column>
-                            <Table.Column>Delete</Table.Column>
+                            <Table.Column>Action</Table.Column>
                         </Table.Header>
                         <Table.Body>
                             {
@@ -76,15 +96,24 @@ const ManageInventoryPage =  () => {
                                             <Table.Cell>{book.category}</Table.Cell>
                                             <Table.Cell>{book.deliveryFee} $</Table.Cell>
                                             <Table.Cell ><div className={`badge badge-soft ${book.status === 'Pending Approval' ? 'badge-primary' : book.status === 'Published' ? 'badge-success' : 'badge-danger'}`}>{book.status}</div></Table.Cell>
-                                            <Table.Cell>
-                                                <button className="btn btn-ghost bg-gray-100 hover:bg-gray-200">
-                                                    <MdEdit className="text-primary" />
-                                                </button>
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                <button onClick={() => handleDeleteData(book._id)} className="btn btn-ghost bg-danger/10 hover:bg-danger/20">
+                                            <Table.Cell className="flex gap-2">
+                                                <button onClick={() => handleDeleteData(book._id)} className="btn btn-ghost bg-danger/10 hover:bg-danger/20 hover:unpublish" >
                                                     <MdDelete className="text-danger" />
                                                 </button>
+                                                {
+                                                    book.status === 'Published' ? (
+                                                        <Tooltip 
+                                                            delay={100}>
+                                                            <Button onClick={() => handleUnpublish(book._id)} className="btn btn-ghost bg-primary/10 hover:bg-primary/20" >
+                                                                <MdEditOff />
+                                                            </Button>
+                                                            <Tooltip.Content>
+                                                                <p>Unpublish Book</p>
+                                                            </Tooltip.Content>
+                                                        </Tooltip>
+                                                    ) : null
+                                                }
+                                                
                                             </Table.Cell>
                                         </Table.Row>
                                     );
