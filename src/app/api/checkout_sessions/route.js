@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 
 import { stripe } from '../../../lib/stripe'
+import { getUser } from '@/src/lib/userSession'
 
 export async function POST(request) {
     try {
@@ -10,6 +11,13 @@ export async function POST(request) {
         const formData = await request.formData();
         const deliveryfee = formData.get('price')
         const title = formData.get('title')
+        const librarianId = formData.get('librarianId')
+
+        const user = await getUser();
+        const userId = user?.id; // Fallback to null if user ID is not available
+        const userName = user?.name; // Fallback to null if user name is not available
+        
+        
 
         // Create Checkout Sessions from body params.
         const session = await stripe.checkout.sessions.create({
@@ -35,8 +43,16 @@ export async function POST(request) {
                     quantity: 1,
                 },
             ],
+            metadata : {
+                userId,
+                librarianId,
+                title,
+                deliveryfee,
+                userName
+            },
             mode: 'payment',
             success_url: `${origin}/browse-books/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${origin}/browse-books/cancel`,
         });
         return NextResponse.redirect(session.url, 303)
     } catch (err) {

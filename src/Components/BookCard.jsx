@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import Image from 'next/image';
 
 const BookCard = ({ book }) => {
-    const { title, author, description, deliveryfee, coverImage, imageUrl, _id } = book || {};
+    const { title, author, description, deliveryfee, coverImage, imageUrl, _id, availability } = book || {};
     const bookCover = coverImage || imageUrl;
     console.log("Book id:", _id);
     console.log("Rendering BookCard for book:", book);

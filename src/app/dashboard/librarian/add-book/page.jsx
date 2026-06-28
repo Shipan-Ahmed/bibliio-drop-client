@@ -81,7 +81,9 @@ export default function ProfessionalAddBook() {
                 quantity: parseInt(userData.quantity) || 1,
                 coverImage: coverImageUrl,
                 status: "Pending Approval", 
-                librarianId: userId, 
+                librarianId: userId,
+                availability: true,
+                createdAt: new Date().toISOString()
             };
 
             console.log("Submitting structured payload:", bookPayload);

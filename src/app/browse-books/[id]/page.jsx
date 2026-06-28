@@ -19,10 +19,11 @@ const BookDetailsPage = async ({ params }) => {
     });
     const book = await bookDetails.json();
     console.log("Fetched book details from API:", book);
-    const { title, author, description, deliveryFee, coverImage, category, librarianId } = book || {};
+    const { title, author, description, deliveryFee, coverImage, category, librarianId, availability } = book || {};
     console.log("librarianId from book details:", librarianId);
-    
-    const temporaryStatus = "Available"; // Temporary status for demonstration purposes
+    console.log("Availability from book details:", availability);
+
+    const temporaryStatus = availability ? "Available" : "Not Available"; // Temporary status for demonstration purposes
     return (
         <div className='min-h-screen container mx-auto flex items-center justify-center bg-base-100 p-4'>
             <div className="flex flex-col md:flex-row bg-white/30 shadow-md rounded-lg p-4 space-x-4  ">
@@ -45,6 +46,8 @@ const BookDetailsPage = async ({ params }) => {
                         <form action="/api/checkout_sessions" method="POST" className="w-full">
                             <input type="hidden" name="price" value={deliveryFee} />
                             <input type="hidden" name="title" value={title} />
+                            <input type="hidden" name="librarianId" value={librarianId} />
+                            <input type="hidden" name="availability" value={availability} />
                             <Button type='submit' role="link" disabled={userId === librarianId} className="btn btn-primary w-full text-xl rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5">
                                 Request to Delivery
                             </Button>
