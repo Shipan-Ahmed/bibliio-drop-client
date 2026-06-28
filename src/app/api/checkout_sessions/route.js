@@ -12,6 +12,7 @@ export async function POST(request) {
         const deliveryfee = formData.get('price')
         const title = formData.get('title')
         const librarianId = formData.get('librarianId')
+        const bookId = formData.get('bookId')
 
         const user = await getUser();
         const userId = user?.id; // Fallback to null if user ID is not available
@@ -48,7 +49,8 @@ export async function POST(request) {
                 librarianId,
                 title,
                 deliveryfee,
-                userName
+                userName,
+                bookId
             },
             mode: 'payment',
             success_url: `${origin}/browse-books/success?session_id={CHECKOUT_SESSION_ID}`,

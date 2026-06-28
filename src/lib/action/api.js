@@ -14,6 +14,16 @@ export const getData = async () => {
     return allBooks;
 };
 
+export const getBookDetails = async (id) => {
+    const bookDetails = await fetch(`${baseUrl}/api/books/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return bookDetails.json();
+}
+
 export const getPaymentlibrarian = async () => {
     const userPaymentStatus = await fetch(`${baseUrl}/api/payment-status/librarian?librarianId=${userId}`, {
         method: 'GET',
@@ -35,4 +45,38 @@ export const getPaymentUser = async () => {
     });
     const paymentStatus = await userPaymentStatus.json();
     return paymentStatus;
+};
+
+
+export const getReviewsByBookId = async (bookId) => {
+    const reviewsResponse = await fetch(`${baseUrl}/api/reviews/${bookId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const reviews = await reviewsResponse.json();
+    return reviews;
+};
+export const checkCommentableByBookId = async (bookId) => {
+    const reviewsResponse = await fetch(`${baseUrl}/api/payment-status//${bookId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const reviews = await reviewsResponse.json();
+    return reviews;
+};
+
+export const checkCommentable = async (data) => {
+    const { bookId, userId } = data;
+    const commentableResponse = await fetch(`${baseUrl}/api/commentable/${bookId}/userId?userId=${userId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const commentable = await commentableResponse.json();
+    return commentable;
 };
