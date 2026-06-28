@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 import { Button } from '@heroui/react';
 import { checkCommentable, getReviewsByBookId, getBookDetails } from '@/src/lib/action/api';
-import ReviewSection from './ReviewSection'; // 👈 নতুন তৈরি করা ক্লায়েন্ট ফাইলটি ইম্পোর্ট করুন
+import ReviewSection from './ReviewSection'; 
 
 const BookDetailsPage = async ({ params }) => {
     const user = await getUser();
@@ -51,13 +51,13 @@ const BookDetailsPage = async ({ params }) => {
                 </div>
             </div>
 
-            {/* 👇 ইনভ্যালিড রিভিউ পার্ট বাদ দিয়ে নতুন ক্লায়েন্ট কম্পোনেন্টটি বসানো হলো */}
             <ReviewSection
                 bookId={id}
                 userId={userId}
                 userName={user?.name}
                 commentable={commentable}
                 initialReviews={allReviews}
+                title={title}
             />
         </div>
     );

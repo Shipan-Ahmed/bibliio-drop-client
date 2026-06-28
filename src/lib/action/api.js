@@ -80,3 +80,14 @@ export const checkCommentable = async (data) => {
     const commentable = await commentableResponse.json();
     return commentable;
 };
+
+export const getUserReviews = async (userId) => {
+    const reviewsResponse = await fetch(`${baseUrl}/api/reviews/user/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const reviews = await reviewsResponse.json();
+    return reviews;
+};

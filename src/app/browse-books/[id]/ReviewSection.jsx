@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 
-const ReviewSection = ({ bookId, userId, userName, commentable, initialReviews }) => {
+const ReviewSection = ({ bookId, userId, userName, commentable, initialReviews , title }) => {
     const router = useRouter();
     const [reviews, setReviews] = useState(initialReviews || []);
     const [loading, setLoading] = useState(false);
@@ -21,6 +21,7 @@ const ReviewSection = ({ bookId, userId, userName, commentable, initialReviews }
             userId,
             userName: userName || "Anonymous",
             comment,
+            title,
             timestamp: new Date().toISOString(),
         };
 
@@ -37,14 +38,10 @@ const ReviewSection = ({ bookId, userId, userName, commentable, initialReviews }
                 const data = await res.json();
                 console.log("Review submitted successfully:", data);
 
-                // ফর্ম রিসেট করা
                 e.target.reset();
 
-                // নতুন রিভিউটি পেজে সাথে সাথে দেখানোর জন্য স্টেট আপডেট
-                // আপনার API রেসপন্স অনুযায়ী ডাটা স্ট্রাকচার চেঞ্জ হতে পারে
                 setReviews([reviewData, ...reviews]);
 
-                // সার্ভার ডেটা রিফ্রেশ করা
                 router.refresh();
             }
         } catch (error) {
@@ -57,11 +54,10 @@ const ReviewSection = ({ bookId, userId, userName, commentable, initialReviews }
     return (
         <div className='flex flex-col gap-4 items-start bg-white rounded-2xl shadow-md p-4 w-full mt-10'>
             <h2 className='text-3xl font-bold p-2 pt-2 '>Reviews ({reviews.length})</h2>
-            <p className='text-lg'>Here are the reviews for this book:</p>
             <p className='text-gray-600'>Only users who have read this book can leave a review.</p>
 
             <div className='flex flex-col gap-4 w-full mt-10'>
-                {/* কমেন্ট করার ফর্ম */}
+              
                 {commentable && (
                     <div className='border-b border-gray-300 pb-4 bg-white shadow-md rounded-lg p-4'>
                         <h3 className='text-xl font-semibold mb-2'>Leave a Review</h3>
@@ -83,7 +79,6 @@ const ReviewSection = ({ bookId, userId, userName, commentable, initialReviews }
                     </div>
                 )}
 
-                {/* রিভিউ লিস্ট রেন্ডার */}
                 {reviews.map((review, index) => (
                     <div key={review._id || index} className='border-b border-gray-300 pb-4 bg-white shadow-md rounded-lg p-4'>
                         <p className='text-gray-700'>{review.comment}</p>
