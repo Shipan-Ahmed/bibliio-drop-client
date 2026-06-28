@@ -19,7 +19,7 @@ export default async function DashboardSidebar() {
     const user = session?.user;
     const DashboardItems = {
         reader: [
-            { icon: LuLayoutDashboard , label: "Overview", link: "/dashboard/reader" },
+            { icon: LuLayoutDashboard , label: "Overview", link: "/dashboard/reader/overview" },
             { icon: LuHistory , label: "Delivery History", link: "/dashboard/reader/delivery-history" },
             { icon: LuBookOpen, label: "My Reading List", link: "/dashboard/reader/reading-list" },
             { icon: LuStar , label: "My Reviews", link: "/dashboard/reader/reviews" },

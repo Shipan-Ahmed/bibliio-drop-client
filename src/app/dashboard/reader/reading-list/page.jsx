@@ -20,7 +20,7 @@ const MyReadingPage = async () => {
                         {
                               ReceivedBooks?.map((book, index) => {
                                 return (
-                                    <div key={index} className="bg-white shadow rounded-lg p-4 mb-4 flex flex-col items-center justify-center"> 
+                                    <div key={index} className="bg-white border border-gray-200 shadow rounded-lg p-4 mb-4 flex flex-col items-center justify-center"> 
                                         <div className="flex items-center justify-center mb-4">
                                             <FiBookOpen className="text-4xl text-gray-500 mb-2" />
                                         </div>
