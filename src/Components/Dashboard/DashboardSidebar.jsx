@@ -32,7 +32,7 @@ export default async function DashboardSidebar() {
             { icon: LuTruck , label: "Manage Deliveries", link: "/dashboard/librarian/deliveries" },
         ],
         admin: [
-            { icon: LuLayoutDashboard , label: "Overview", link: "/dashboard/admin" },
+            { icon: LuLayoutDashboard , label: "Overview", link: "/dashboard/admin/overview" },
             { icon: FaRegCheckSquare , label: "Book Approval Queue", link: "/dashboard/admin/approval-queue" },
             { icon: LuUsers , label: "Manage Users", link: "/dashboard/admin/users" },
             { icon: LuBook , label: "Manage All Books", link: "/dashboard/admin/books" },

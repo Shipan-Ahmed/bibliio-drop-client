@@ -14,6 +14,17 @@ export const getData = async () => {
     return allBooks;
 };
 
+export const getAllBooks = async () => {
+    const allBooksResponse = await fetch(`${baseUrl}/api/allbooks`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const allBooks = await allBooksResponse.json();
+    return allBooks;
+};
+
 export const getBookDetails = async (id) => {
     const bookDetails = await fetch(`${baseUrl}/api/books/${id}`, {
         method: 'GET',
@@ -58,6 +69,7 @@ export const DeleteBook = async (bookId) => {
     }
    
 }
+
 
 export const getPaymentlibrarian = async () => {
     const userPaymentStatus = await fetch(`${baseUrl}/api/payment-status/librarian?librarianId=${userId}`, {
@@ -126,3 +138,16 @@ export const getUserReviews = async (userId) => {
     const reviews = await reviewsResponse.json();
     return reviews;
 };
+
+
+
+export const getAllUser = async () => {
+    const allUsersResponse = await fetch(`${baseUrl}/api/users`, {
+        method: 'GET',  
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const allUsers = await allUsersResponse.json();
+    return allUsers;
+}
