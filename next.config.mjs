@@ -9,6 +9,24 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+       
+        source: '/dashboard/reader',
+        
+        destination: '/dashboard/reader/overview',
+       
+        permanent: false,
+      },
+      {
+        
+        source: '/dashboard/librarian',
+        destination: '/dashboard/librarian/overview', 
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

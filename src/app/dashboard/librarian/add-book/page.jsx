@@ -118,9 +118,9 @@ export default function ProfessionalAddBook() {
     };
 
     return (
-        <div className="max-w-5xl mx-auto py-4">
+        <div className="container mx-auto  py-4">
             {/* Banner Notice System */}
-            <div className="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-3 items-start">
+            {/* <div className="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-3 items-start">
                 <AlertCircle className="text-amber-600 shrink-0 mt-0.5" size={18} />
                 <div>
                     <h4 className="text-sm font-semibold text-amber-800 font-heading">Ecosystem Notice: Quality Verification Active</h4>
@@ -128,143 +128,150 @@ export default function ProfessionalAddBook() {
                         Every newly registered book defaults to <span className="font-bold">Pending Approval</span> status. It will immediately show on your internal Librarian Inventory dashboard, but will remain hidden from standard Reader browse catalogs until system admins review its metadata.
                     </p>
                 </div>
+            </div> */}
+            <div className=" mb-6 bg-white p-6  my-10">
+                <h2 className="text-3xl font-bold text-neutral font-heading">Add New Book</h2>
+                <p className="text-sm text-gray-500">Fill in the details below to add a new book to your inventory. All fields are required.</p>
             </div>
 
+
             {/* Main Structural Form Layout Split */}
-            <Form className="grid grid-cols-1 lg:grid-cols-3 gap-8" onSubmit={onSubmit} onReset={handleFormReset}>
+            <div className="border border-gray-100 rounded-2xl shadow-sm bg-white p-6">
+                <Form className="grid grid-cols-1 lg:grid-cols-3 gap-8" onSubmit={onSubmit} onReset={handleFormReset}>
 
-                {/* Core Inputs Block */}
-                <div className="lg:col-span-2 space-y-6 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                    <div className="border-b border-gray-100 pb-3">
-                        <h2 className="text-lg font-bold text-neutral font-heading flex items-center gap-2">
-                            <BiBook className="text-primary" size={20} />
-                            Book Particulars
-                        </h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <TextField name="title" type="text" isRequired className="w-full">
-                            <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60 mb-1">Book Title</Label>
-                            <Input placeholder="e.g., Fundamentals of Algorithms" />
-                        </TextField>
-
-                        <TextField name="author" type="text" isRequired className="w-full">
-                            <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60 mb-1">Author Name</Label>
-                            <Input placeholder="e.g., Thomas H. Cormen" />
-                        </TextField>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="flex flex-col gap-1 w-full">
-                            <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60">Category</Label>
-                            <Select name="category" placeholder="Assign standard classification" isRequired className="w-full">
-                                <Select.Trigger><Select.Value /><Select.Indicator /></Select.Trigger>
-                                <Select.Popover>
-                                    <ListBox>
-                                        <ListBox.Item id="ScienceFiction">Science Fiction</ListBox.Item>
-                                        <ListBox.Item id="Fantacy">Fantasy</ListBox.Item>
-                                        <ListBox.Item id="Mystery">Mystery & Thriller</ListBox.Item>
-                                        <ListBox.Item id="History">Historical Fiction</ListBox.Item>
-                                        <ListBox.Item id="Romance">Romance</ListBox.Item>
-                                        <ListBox.Item id="NonFiction">Non Fiction</ListBox.Item>
-                                    </ListBox>
-                                </Select.Popover>
-                            </Select>
-                        </div>
-
-                        <TextField name="quantity" type="number" isRequired className="w-full" defaultValue="1">
-                            <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60 mb-1">Initial Stock (Copies)</Label>
-                            <Input placeholder="Enter initial stock quantity" min="1" defaultValue="1" />
-                        </TextField>
-                    </div>
-
-                    <div className="flex flex-col gap-1 w-full">
-                        <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60">Description</Label>
-                        <TextArea
-                            name="description"
-                            placeholder="Provide a comprehensive narrative overview, condition markers, or key chapters to capture reader interest..."
-                            className="w-full min-h-[120px]"
-                            isRequired
-                        />
-                    </div>
-                </div>
-
-                {/* Media Assets & Submission Controls */}
-                <div className="space-y-6 flex flex-col justify-between">
-
-                    {/* Cover Media Dropzone Box */}
-                    <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4 flex-1">
+                    {/* Core Inputs Block */}
+                    <div className="lg:col-span-2 space-y-6 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                         <div className="border-b border-gray-100 pb-3">
-                            <h2 className="text-sm font-bold text-neutral font-heading flex items-center gap-2">
-                                <BiCategory className="text-primary" size={18} />
-                                Cover Image Upload
+                            <h2 className="text-lg font-bold text-neutral font-heading flex items-center gap-2">
+                                <BiBook className="text-primary" size={20} />
+                                Book Particulars
                             </h2>
                         </div>
 
-                        <div className="relative border-2 border-dashed border-gray-200 hover:border-primary/50 transition-colors rounded-xl p-4 flex flex-col items-center justify-center text-center bg-gray-50/50 min-h-[220px]">
-                            
-                            {/* Unified Single Input Placement */}
-                            <input 
-                                ref={fileInputRef}
-                                id="coverImageInput"
-                                type="file" 
-                                name="coverImage" 
-                                accept="image/*" 
-                                className="hidden" 
-                                onChange={handleImageChange} 
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <TextField name="title" type="text" isRequired className="w-full">
+                                <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60 mb-1">Book Title</Label>
+                                <Input placeholder="e.g., Fundamentals of Algorithms" />
+                            </TextField>
+
+                            <TextField name="author" type="text" isRequired className="w-full">
+                                <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60 mb-1">Author Name</Label>
+                                <Input placeholder="e.g., Thomas H. Cormen" />
+                            </TextField>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="flex flex-col gap-1 w-full">
+                                <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60">Category</Label>
+                                <Select name="category" placeholder="Assign standard classification" isRequired className="w-full">
+                                    <Select.Trigger><Select.Value /><Select.Indicator /></Select.Trigger>
+                                    <Select.Popover>
+                                        <ListBox>
+                                            <ListBox.Item id="ScienceFiction">Science Fiction</ListBox.Item>
+                                            <ListBox.Item id="Fantacy">Fantasy</ListBox.Item>
+                                            <ListBox.Item id="Mystery">Mystery & Thriller</ListBox.Item>
+                                            <ListBox.Item id="History">Historical Fiction</ListBox.Item>
+                                            <ListBox.Item id="Romance">Romance</ListBox.Item>
+                                            <ListBox.Item id="NonFiction">Non Fiction</ListBox.Item>
+                                        </ListBox>
+                                    </Select.Popover>
+                                </Select>
+                            </div>
+
+                            <TextField name="quantity" type="number" isRequired className="w-full" defaultValue="1">
+                                <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60 mb-1">Initial Stock (Copies)</Label>
+                                <Input placeholder="Enter initial stock quantity" min="1" defaultValue="1" />
+                            </TextField>
+                        </div>
+
+                        <div className="flex flex-col gap-1 w-full">
+                            <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60">Description</Label>
+                            <TextArea
+                                name="description"
+                                placeholder="Provide a comprehensive narrative overview, condition markers, or key chapters to capture reader interest..."
+                                className="w-full min-h-[120px]"
+                                isRequired
                             />
+                        </div>
+                    </div>
 
-                            {imagePreview ? (
-                                <div className="absolute inset-2 rounded-lg overflow-hidden group">
-                                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                        <label htmlFor="coverImageInput" className="cursor-pointer text-white text-xs bg-white/20 px-3 py-1.5 rounded-md backdrop-blur-sm hover:bg-white/30 transition-all">
-                                            Change File
-                                        </label>
+                    {/* Media Assets & Submission Controls */}
+                    <div className="space-y-6 flex flex-col justify-between">
+
+                        {/* Cover Media Dropzone Box */}
+                        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4 flex-1">
+                            <div className="border-b border-gray-100 pb-3">
+                                <h2 className="text-sm font-bold text-neutral font-heading flex items-center gap-2">
+                                    <BiCategory className="text-primary" size={18} />
+                                    Cover Image Upload
+                                </h2>
+                            </div>
+
+                            <div className="relative border-2 border-dashed border-gray-200 hover:border-primary/50 transition-colors rounded-xl p-4 flex flex-col items-center justify-center text-center bg-gray-50/50 min-h-[220px]">
+
+                                {/* Unified Single Input Placement */}
+                                <input
+                                    ref={fileInputRef}
+                                    id="coverImageInput"
+                                    type="file"
+                                    name="coverImage"
+                                    accept="image/*"
+                                    className="hidden"
+                                    onChange={handleImageChange}
+                                />
+
+                                {imagePreview ? (
+                                    <div className="absolute inset-2 rounded-lg overflow-hidden group">
+                                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <label htmlFor="coverImageInput" className="cursor-pointer text-white text-xs bg-white/20 px-3 py-1.5 rounded-md backdrop-blur-sm hover:bg-white/30 transition-all">
+                                                Change File
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                            ) : (
-                                <label htmlFor="coverImageInput" className="cursor-pointer flex flex-col items-center justify-center w-full h-full p-4">
-                                    <BiCloudUpload className="text-neutral/30 mb-2" size={36} />
-                                    <span className="text-xs font-medium text-neutral/70">Click or drag image file here</span>
-                                    <span className="text-[10px] text-neutral/40 mt-1">Accepts PNG, JPG, JPEG formats</span>
-                                </label>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Pricing & Submission Action Box */}
-                    <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
-                        <TextField name="deliveryFee" type="number" isRequired className="w-full">
-                            <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60 mb-1 flex items-center gap-1">
-                                <BiDollar size={14} /> Delivery Fee ($)
-                            </Label>
-                            <Input placeholder="0.00" min="0" step="0.01" />
-                        </TextField>
-
-                        <div className="flex gap-3 w-full pt-2">
-                            <Button type="reset" variant="flat" className="flex-1 rounded-xl font-medium text-sm" isDisabled={loading}>
-                                Clear Form
-                            </Button>
-                            <Button type="submit" color="primary" className="flex-1 rounded-xl font-bold text-sm bg-primary text-white shadow-sm" isDisabled={loading}>
-                                {loading ? (
-                                    <>
-                                        <Loader2 className="size-4 animate-spin" />
-                                        <span>Publishing...</span>
-                                    </>
                                 ) : (
-                                    <>
-                                        <BiCheck size={18} />
-                                        <span>Publish Book</span>
-                                    </>
+                                    <label htmlFor="coverImageInput" className="cursor-pointer flex flex-col items-center justify-center w-full h-full p-4">
+                                        <BiCloudUpload className="text-neutral/30 mb-2" size={36} />
+                                        <span className="text-xs font-medium text-neutral/70">Click or drag image file here</span>
+                                        <span className="text-[10px] text-neutral/40 mt-1">Accepts PNG, JPG, JPEG formats</span>
+                                    </label>
                                 )}
-                            </Button>
+                            </div>
                         </div>
+
+                        {/* Pricing & Submission Action Box */}
+                        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
+                            <TextField name="deliveryFee" type="number" isRequired className="w-full">
+                                <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60 mb-1 flex items-center gap-1">
+                                    <BiDollar size={14} /> Delivery Fee ($)
+                                </Label>
+                                <Input placeholder="0.00" min="0" step="0.01" />
+                            </TextField>
+
+                            <div className="flex gap-3 w-full pt-2">
+                                <Button type="reset" variant="flat" className="flex-1 rounded-xl font-medium text-sm" isDisabled={loading}>
+                                    Clear Form
+                                </Button>
+                                <Button type="submit" color="primary" className="flex-1 rounded-xl font-bold text-sm bg-primary text-white shadow-sm" isDisabled={loading}>
+                                    {loading ? (
+                                        <>
+                                            <Loader2 className="size-4 animate-spin" />
+                                            <span>Publishing...</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <BiCheck size={18} />
+                                            <span>Publish Book</span>
+                                        </>
+                                    )}
+                                </Button>
+                            </div>
+                        </div>
+
                     </div>
 
-                </div>
-
-            </Form>
+                </Form>
+            </div>
         </div>
     );
 }

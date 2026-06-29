@@ -76,7 +76,7 @@ const ManageInventoryPage =  () => {
 
     return (
         <div className="p-4 space-y-4">
-            <h2 className="text-xl font-bold text-neutral">Manage Inventory</h2>
+            <h2 className="text-3xl font-bold text-neutral">Manage Inventory</h2>
             <Table>
                 <Table.ScrollContainer>
                     <Table.Content aria-label="Team members" className="min-w-[600px]">

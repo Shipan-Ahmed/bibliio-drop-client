@@ -26,7 +26,7 @@ export default async function DashboardSidebar() {
             { icon: LuHeart , label: "Wishlist", link: "/dashboard/reader/wishlist" },
         ],
         librarian: [
-            { icon: LuLayoutDashboard , label: "Overview", link: "/dashboard/librarian" },
+            { icon: LuLayoutDashboard , label: "Overview", link: "/dashboard/librarian/overview" },
             { icon: FiPlusCircle , label: "Add Book", link: "/dashboard/librarian/add-book" },
             { icon: LuBoxes , label: "Manage Inventory", link: "/dashboard/librarian/inventory" },
             { icon: LuTruck , label: "Manage Deliveries", link: "/dashboard/librarian/deliveries" },
