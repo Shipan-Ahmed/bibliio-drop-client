@@ -23,6 +23,41 @@ export const getBookDetails = async (id) => {
     });
     return bookDetails.json();
 }
+export const updateBookAvailability = async (bookId, newStatus) => {
+    try {
+        const response = await fetch(`${baseUrl}/api/books/${bookId}/availability`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: newStatus }),
+        });
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Error updating book availability:', error);
+        throw error;
+    }
+};
+
+
+export const DeleteBook = async (bookId) => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/books/${bookId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await res.json();
+        console.log("Delete response:", data);
+        return data; // Return the response data for further handling if needed
+    } catch (error) {
+        console.error('Error deleting book:', error);
+        throw error; // Rethrow the error for further handling if needed
+    }
+   
+}
 
 export const getPaymentlibrarian = async () => {
     const userPaymentStatus = await fetch(`${baseUrl}/api/payment-status/librarian?librarianId=${userId}`, {

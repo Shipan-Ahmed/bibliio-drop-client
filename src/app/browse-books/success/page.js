@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Button, Card } from '@heroui/react'
 import { FaCheckCircle, FaEnvelope, FaBookOpen } from 'react-icons/fa'
 import { PaymentStatus } from '@/src/lib/action/payment'
+import { updateBookAvailability } from '@/src/lib/action/api'
 
 export default async function Success({ searchParams }) {
     const params = await searchParams
@@ -40,6 +41,11 @@ export default async function Success({ searchParams }) {
         } catch (dbError) {
             console.error("Failed to update payment status in DB:", dbError)
             
+        }
+        try {
+            await updateBookAvailability(metadata.bookId, "false")
+        } catch (bookError) {
+            console.error("Failed to update book status:", bookError)
         }
 
         return (

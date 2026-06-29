@@ -25,24 +25,12 @@ const ManageInventoryPage =  () => {
         if (!confirmed) return;
         console.log("Deleting book with ID:", bookId);
         
-        try {
-            const res = await fetch(`http://localhost:3002/api/books/${bookId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const data = await res.json();
-            console.log("Delete response:", data);
-            if (!res.ok) {
-                throw new Error(`Failed to delete book with ID ${bookId}`);
-            }
-            if(data.success) {
-                // Update the state to remove the deleted book from the list
-                setAllBooks(prevBooks => prevBooks.filter(book => book._id !== bookId));
-            }
-        } catch (error) {
-            console.error('Error deleting book:', error);
+       const res = await DeleteBook(bookId);
+        if (res.success) {
+            // Update the state to remove the deleted book
+            setAllBooks(prevBooks => prevBooks.filter(book => book._id !== bookId));
+        } else {
+            console.error("Failed to delete book with ID:", bookId);
         }
     }
 
@@ -51,7 +39,7 @@ const ManageInventoryPage =  () => {
         console.log("Unpublishing book with ID:", bookId);
         // i want to change the status of the book to "Unpublished" in the database
         try {
-            const res = await fetch(`http://localhost:3002/api/books/${bookId}/unpublish`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/books/${bookId}/unpublish`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
