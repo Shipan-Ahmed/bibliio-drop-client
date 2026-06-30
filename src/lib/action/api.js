@@ -25,6 +25,18 @@ export const getAllBooks = async () => {
     return allBooks;
 };
 
+export const getAllBooksApproved = async () => {
+    const allBooksApprovedResponse = await fetch(`${baseUrl}/api/books/approved`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const allBooksApproved = await allBooksApprovedResponse.json();
+    return allBooksApproved;
+}
+
+
 export const getBookDetails = async (id) => {
     const bookDetails = await fetch(`${baseUrl}/api/books/${id}`, {
         method: 'GET',
@@ -70,6 +82,29 @@ export const DeleteBook = async (bookId) => {
    
 }
 
+
+export const getAllAdminPendingBooks = async () => {
+    const allAdminPendingBooksResponse = await fetch(`${baseUrl}/api/admin/pending-books`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const allAdminPendingBooks = await allAdminPendingBooksResponse.json();
+    return allAdminPendingBooks;
+}
+
+
+export const getAllPaymentData = async () => {
+    const allPaymentDataResponse = await fetch(`${baseUrl}/api/payments`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const allPaymentData = await allPaymentDataResponse.json();
+    return allPaymentData;
+};
 
 export const getPaymentlibrarian = async () => {
     const userPaymentStatus = await fetch(`${baseUrl}/api/payment-status/librarian?librarianId=${userId}`, {

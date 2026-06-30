@@ -25,6 +25,11 @@ const nextConfig = {
         destination: '/dashboard/librarian/overview', 
         permanent: false,
       },
+      {
+        source: '/dashboard/admin',
+        destination: '/dashboard/admin/overview', 
+        permanent: false,
+      }
     ];
   },
 };

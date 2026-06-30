@@ -69,7 +69,7 @@ const AdminOverview = async () => {
                     <div className="flex items-center justify-center mb-4 bg-gray-100 rounded-lg w-16 h-16">
                         <FaDollarSign className="text-4xl text-green- green-600 mb-2" />
                     </div>
-                    <h2 className="text-xl font-semibold text-gray-800">Total Earning</h2>
+                    <h2 className="text-xl font-semibold text-gray-800">Total Revenue</h2>
                     <p className="text-2xl font-bold text-green-600">${TotalEarning}</p>
                 </div>
             </div>

@@ -5,10 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
-import { FiUser, FiMail, FiLock, FiCamera, FiBookOpen, FiShield } from "react-icons/fi";
+import { FiUser, FiMail, FiLock, FiBookOpen, FiShield } from "react-icons/fi";
 import { authClient } from "@/src/lib/auth-client";
 import toast from "react-hot-toast";
-import { BiCloudUpload } from "react-icons/bi";
+import { BiCategory, BiCloudUpload } from "react-icons/bi";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -20,8 +20,9 @@ export default function RegisterPage() {
         role: "reader",
     });
 
-    // 1. Separate state to track the locally selected image file
+    // Track the raw file and its browser preview URL
     const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -29,10 +30,12 @@ export default function RegisterPage() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // 2. Handle file input selection changes
+    // Handle file input selection changes + generate real-time local preview
     const handleFileChange = (e) => {
         if (e.target.files && e.target.files[0]) {
-            setImageFile(e.target.files[0]);
+            const file = e.target.files[0];
+            setImageFile(file);
+            setImagePreview(URL.createObjectURL(file)); // Creates a local temporary blob URL
         }
     };
 
@@ -57,12 +60,11 @@ export default function RegisterPage() {
         try {
             setLoading(true);
 
-            // 3. Upload the image file to ImgBB first
+            // Upload the image file to ImgBB first
             const imgBbFormData = new FormData();
             imgBbFormData.append("image", imageFile);
             console.log("Uploading image to ImgBB:", imageFile.name);
 
-            // Replace "YOUR_IMGBB_API_KEY" with your real key string
             const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
 
             const imgBbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
@@ -79,18 +81,23 @@ export default function RegisterPage() {
             // Extract the generated text URL from ImgBB payload response
             const hostedPhotoUrl = imgBbData.data.url;
 
-            // 4. Hook cleanly into Better Auth client instance using the generated URL
-           const {data, err} =  await authClient.signUp.email({
+            // Hook cleanly into Better Auth client instance
+            const { data, err } = await authClient.signUp.email({
                 email: formData.email,
                 password: formData.password,
                 name: formData.fullName,
-                image: hostedPhotoUrl, // Passed dynamic string path here
-                role: formData.role 
-           });
+                image: hostedPhotoUrl,
+                role: formData.role
+            });
+
             console.log("data: ", data);
+
             if (err) {
-                toast.error("Sign up failed: " + error.message);
+                toast.error("Sign up failed: " + err.message); // Fixed 'error' to 'err'
+                return;
             }
+
+            // Clean up state on success
             setFormData({
                 fullName: "",
                 email: "",
@@ -99,8 +106,9 @@ export default function RegisterPage() {
                 role: "reader",
             });
             setImageFile(null);
+            setImagePreview(null);
+
             if (data) {
-                
                 toast.success("Account created successfully!");
                 router.push("/");
             }
@@ -210,19 +218,16 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-                        {/* Updated Avatar Upload Input File Field */}
-                        {/* Cover Media Dropzone Box */}
+                        {/* Image Upload Block */}
                         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4 flex-1">
                             <div className="border-b border-gray-100 pb-3">
                                 <h2 className="text-sm font-bold text-neutral font-heading flex items-center gap-2">
                                     <BiCategory className="text-primary" size={18} />
-                                    Cover Image Upload
+                                    Avatar Image Upload
                                 </h2>
                             </div>
 
                             <div className="relative border-2 border-dashed border-gray-200 hover:border-primary/50 transition-colors rounded-xl p-4 flex flex-col items-center justify-center text-center bg-gray-50/50 min-h-[220px]">
-
-                                {/* SINGLE PERSISTENT FILE INPUT (Hidden, but handles the true form data) */}
                                 <input
                                     type="file"
                                     id="persistentCoverImage"
@@ -230,12 +235,11 @@ export default function RegisterPage() {
                                     accept="image/*"
                                     className="hidden"
                                     required={!imagePreview}
-                                    onChange={handleImageChange}
+                                    onChange={handleFileChange} // <-- Comment removed from here to fix the build error
                                 />
 
                                 {imagePreview ? (
                                     <div className="absolute inset-2 rounded-lg overflow-hidden group">
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                             <label
@@ -275,7 +279,6 @@ export default function RegisterPage() {
                                         onChange={handleChange}
                                         placeholder="••••••••"
                                         className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-primary text-sm transition-colors bg-gray-50/50"
-                                        
                                     />
                                 </div>
                             </div>

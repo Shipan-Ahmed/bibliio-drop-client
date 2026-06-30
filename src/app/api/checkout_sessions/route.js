@@ -19,6 +19,7 @@ export async function POST(request) {
         const userName = user?.name; // Fallback to null if user name is not available
         
         
+        
 
         // Create Checkout Sessions from body params.
         const session = await stripe.checkout.sessions.create({

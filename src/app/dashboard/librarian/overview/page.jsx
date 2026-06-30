@@ -1,4 +1,4 @@
-import LibrarianChart from '@/src/Components/LibrarianChart'; // 👈 নতুন চার্টটি ইম্পোর্ট করুন
+import LibrarianChart from '@/src/Components/LibrarianChart'; 
 import { getData, getPaymentlibrarian } from '@/src/lib/action/api';
 import { getUser } from '@/src/lib/userSession';
 import React from 'react';
@@ -23,7 +23,7 @@ const LibrarianOverview = async () => {
         if (book.createdAt) {
             try {
                 const date = new Date(book.createdAt);
-                const monthName = date.toLocaleString('en-US', { month: 'short' }); // উদা: 'Feb'
+                const monthName = date.toLocaleString('en-US', { month: 'short' }); 
 
                 if (monthName && monthName !== 'Invalid Date') {
                     monthlyCount[monthName] = (monthlyCount[monthName] || 0) + 1;

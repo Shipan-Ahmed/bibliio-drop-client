@@ -64,7 +64,7 @@ const BookDetailsPage = async ({ params }) => {
                         <p className="badge badge-primary rounded-lg shadow text-xl"><span className="font-bold">Delivery Fee:</span> <span>${deliveryFee?.toFixed(2)}</span></p>
                     </div>
 
-                    {/* 🛒 ২. ডেলিভারি বাটন (সবার জন্যই থাকবে, কিন্তু লাইব্রেরিয়ান বা নট-এভেইলেবল হলে ডিজেবল হয়ে যাবে) */}
+                 
                     <div className="w-full flex justify-center items-center">
                         <form action="/api/checkout_sessions" method="POST" className="w-full">
                             <input type="hidden" name="price" value={deliveryFee} />
@@ -74,7 +74,7 @@ const BookDetailsPage = async ({ params }) => {
                             <Button
                                 type='submit'
                                 role="link"
-                                // 👈 ইউজার নিজে লাইব্রেরিয়ান (isOk) হলে অথবা বুক এভেইলেবল না থাকলে বাটন লক হবে
+                               
                                 disabled={isOk || availability === false || availability === "false"}
                                 className={`btn btn-primary w-full text-xl rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 ${(isOk || availability === false || availability === "false")
                                         ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none border-none pointer-events-none"
@@ -85,7 +85,7 @@ const BookDetailsPage = async ({ params }) => {
                             </Button>
                         </form>
                     </div>
-                    {/* 🔒 ১. লাইব্রেরিয়ান কন্ট্রোলস (মালিক হলে আলাদাভাবে উপরে দেখাবে) */}
+                  
                     {isOk && (
                         <div className="w-full bg-gray-50 p-4 rounded-xl border border-gray-100 flex flex-col sm:flex-row gap-3 justify-center items-center mb-2">
                             <Link href={`/browse-books/${id}/edit`} className="w-full sm:w-auto flex-1">

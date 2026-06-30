@@ -3,18 +3,20 @@
 import { useState, useRef } from "react";
 import { Button, Form, Input, Label, TextField, ListBox, Select, TextArea } from "@heroui/react";
 import { BiCheck, BiCloudUpload, BiBook, BiDollar, BiCategory } from "react-icons/bi";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useSession } from "@/src/lib/auth-client";
 
 export default function ProfessionalAddBook() {
-    
-    const {data, isPending} = useSession();
-    const userId = data?.user?.id ; // Fallback to null if user ID is not available
+
+    const { data, isPending } = useSession();
+    const userId = data?.user?.id; // Fallback to null if user ID is not available
     console.log("Current user ID:", userId);
 
     const [loading, setLoading] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);
+    // Added a state to correctly capture HeroUI Select data
+    const [selectedCategory, setSelectedCategory] = useState("");
     const fileInputRef = useRef(null); // Reference to programmatically trigger or clear the input
 
     // Handle local UI preview when user selects an image file
@@ -29,6 +31,7 @@ export default function ProfessionalAddBook() {
 
     const handleFormReset = () => {
         setImagePreview(null);
+        setSelectedCategory(""); // Reset category state
         if (fileInputRef.current) {
             fileInputRef.current.value = ""; // Explicitly clear native file data
         }
@@ -42,7 +45,6 @@ export default function ProfessionalAddBook() {
             const formData = new FormData(e.target);
             const userData = Object.fromEntries(formData.entries());
             console.log("Raw form data entries:", userData);
-            console.log("Current user  a:", userId);
 
             const imageFile = formData.get("coverImage");
             console.log("image file: ", imageFile);
@@ -70,43 +72,44 @@ export default function ProfessionalAddBook() {
             }
 
             console.log("Uploaded cover image URL:", coverImageUrl);
-            
-            // 2. Map Clean Object Schema
+
+            // 2. Map Clean Object Schema (Fixed: Using selectedCategory state)
             const bookPayload = {
                 title: userData.title,
                 author: userData.author,
                 description: userData.description,
-                category: userData.category,
+                category: selectedCategory, // Injected the tracked category state directly
                 deliveryFee: parseFloat(userData.deliveryFee) || 0,
-                quantity: parseInt(userData.quantity) || 1,
+                quantity:  1,
                 coverImage: coverImageUrl,
-                status: "Pending Approval", 
+                status: "Pending Approval",
                 librarianId: userId,
                 availability: true,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                adminStatus: "pending"
             };
 
             console.log("Submitting structured payload:", bookPayload);
 
-            const res = await fetch('http://localhost:3002/api/books', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/books`, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json",
                 },
                 body: JSON.stringify(bookPayload)
             });
-            
-            const data = await res.json();
-            console.log("Server response:", data);
+
+            const responseData = await res.json();
+            console.log("Server response:", responseData);
 
             if (!res.ok) {
-                throw new Error(data.message || "Failed to submit book data.");
+                throw new Error(responseData.message || "Failed to submit book data.");
             }
 
-            if (data.bookId) {
+            if (responseData.bookId) {
                 toast.success("Success! Book submitted into the admin verification pipeline.");
                 e.target.reset();
-                handleFormReset(); // Clears image preview state and input buffer safely
+                handleFormReset(); // Clears image preview state, category state, and input buffer safely
             } else {
                 throw new Error("Server processed the request but did not return a valid Book ID.");
             }
@@ -118,22 +121,11 @@ export default function ProfessionalAddBook() {
     };
 
     return (
-        <div className="container mx-auto  py-4">
-            {/* Banner Notice System */}
-            {/* <div className="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-3 items-start">
-                <AlertCircle className="text-amber-600 shrink-0 mt-0.5" size={18} />
-                <div>
-                    <h4 className="text-sm font-semibold text-amber-800 font-heading">Ecosystem Notice: Quality Verification Active</h4>
-                    <p className="text-xs text-amber-700 mt-0.5 leading-relaxed">
-                        Every newly registered book defaults to <span className="font-bold">Pending Approval</span> status. It will immediately show on your internal Librarian Inventory dashboard, but will remain hidden from standard Reader browse catalogs until system admins review its metadata.
-                    </p>
-                </div>
-            </div> */}
-            <div className=" mb-6 bg-white p-6  my-10">
+        <div className="container mx-auto py-4">
+            <div className="mb-6 bg-white p-6 my-10">
                 <h2 className="text-3xl font-bold text-neutral font-heading">Add New Book</h2>
                 <p className="text-sm text-gray-500">Fill in the details below to add a new book to your inventory. All fields are required.</p>
             </div>
-
 
             {/* Main Structural Form Layout Split */}
             <div className="border border-gray-100 rounded-2xl shadow-sm bg-white p-6">
@@ -163,12 +155,20 @@ export default function ProfessionalAddBook() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="flex flex-col gap-1 w-full">
                                 <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60">Category</Label>
-                                <Select name="category" placeholder="Assign standard classification" isRequired className="w-full">
+                                {/* Added selectedKey and onSelectionChange listeners to track updates */}
+                                <Select
+                                    name="category"
+                                    placeholder="Assign standard classification"
+                                    isRequired
+                                    className="w-full"
+                                    selectedKey={selectedCategory}
+                                    onSelectionChange={(key) => setSelectedCategory(key)}
+                                >
                                     <Select.Trigger><Select.Value /><Select.Indicator /></Select.Trigger>
                                     <Select.Popover>
                                         <ListBox>
                                             <ListBox.Item id="ScienceFiction">Science Fiction</ListBox.Item>
-                                            <ListBox.Item id="Fantacy">Fantasy</ListBox.Item>
+                                            <ListBox.Item id="Fantasy">Fantasy</ListBox.Item>
                                             <ListBox.Item id="Mystery">Mystery & Thriller</ListBox.Item>
                                             <ListBox.Item id="History">Historical Fiction</ListBox.Item>
                                             <ListBox.Item id="Romance">Romance</ListBox.Item>
@@ -178,10 +178,7 @@ export default function ProfessionalAddBook() {
                                 </Select>
                             </div>
 
-                            <TextField name="quantity" type="number" isRequired className="w-full" defaultValue="1">
-                                <Label className="text-xs font-semibold uppercase tracking-wider text-neutral/60 mb-1">Initial Stock (Copies)</Label>
-                                <Input placeholder="Enter initial stock quantity" min="1" defaultValue="1" />
-                            </TextField>
+                          
                         </div>
 
                         <div className="flex flex-col gap-1 w-full">
@@ -190,7 +187,7 @@ export default function ProfessionalAddBook() {
                                 name="description"
                                 placeholder="Provide a comprehensive narrative overview, condition markers, or key chapters to capture reader interest..."
                                 className="w-full min-h-[120px]"
-                                isRequired
+                               
                             />
                         </div>
                     </div>
@@ -209,7 +206,6 @@ export default function ProfessionalAddBook() {
 
                             <div className="relative border-2 border-dashed border-gray-200 hover:border-primary/50 transition-colors rounded-xl p-4 flex flex-col items-center justify-center text-center bg-gray-50/50 min-h-[220px]">
 
-                                {/* Unified Single Input Placement */}
                                 <input
                                     ref={fileInputRef}
                                     id="coverImageInput"

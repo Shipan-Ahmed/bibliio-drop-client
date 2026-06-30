@@ -12,8 +12,7 @@ const ReviewList = ({ initialReviews }) => {
 
    
     const handleDelete = async (reviewId) => {
-        const confirmed = window.confirm("Are you sure you want to delete this review?");
-        if (!confirmed) return;
+    
 
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/reviews/${reviewId}`, {

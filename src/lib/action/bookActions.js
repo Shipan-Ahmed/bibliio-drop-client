@@ -18,12 +18,12 @@ export async function updateBookAction(formData) {
 
   
     if (!id || !title || !author || isNaN(deliveryFee)) {
-        throw new Error("সবগুলো প্রয়োজনীয় ফিল্ড সঠিকভাবে পূরণ করুন।");
+        throw new Error("all required fields must be provided and valid.");
     }
 
     try {
       
-        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3002";
+        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ;
 
         const response = await fetch(`${baseUrl}/api/books/${id}`, {
             method: 'PATCH',
