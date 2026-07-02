@@ -1,62 +1,113 @@
+'use server';
+import { auth } from "../auth"; 
+import { headers } from "next/headers"; 
 import { getUser } from "../userSession";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-const user = await getUser();
-const userId = user?.id; // Fallback to null if user ID is not available
-export const getData = async () => {
-    const userAllBooks = await fetch(`${baseUrl}/api/books?librarianId=${userId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+
+
+const fetchWithAuth = async (url, options = {}) => {
+   
+    const tokenObj = await auth.api.getToken({
+        headers: await headers()
     });
-    const allBooks = await userAllBooks.json();
-    return allBooks;
+
+    const token = tokenObj?.token || null;
+
+    const headersConfig = {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        ...options.headers,
+    };
+
+    const response = await fetch(url, { ...options, headers: headersConfig });
+    return response.json();
+};
+
+
+export const getData = async () => {
+    const user = await getUser();
+    const userId = user?.id;
+
+    if (!userId) {
+        console.error("User ID not found for getData");
+        return [];
+    }
+
+    return fetchWithAuth(`${baseUrl}/api/books?librarianId=${userId}`, { method: 'GET' });
 };
 
 export const getAllBooks = async () => {
-    const allBooksResponse = await fetch(`${baseUrl}/api/allbooks`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const allBooks = await allBooksResponse.json();
-    return allBooks;
+    return fetchWithAuth(`${baseUrl}/api/allbooks`, { method: 'GET' });
 };
 
-export const getAllBooksApproved = async () => {
-    const allBooksApprovedResponse = await fetch(`${baseUrl}/api/books/approved`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const allBooksApproved = await allBooksApprovedResponse.json();
-    return allBooksApproved;
+
+// export const getAllBooksApproved = async () => {
+//     // without token, public endpoint
+//     try {
+//         const response = await fetch(`${baseUrl}/api/books/approved`, { method: 'GET' });
+//         if (!response.ok) {
+//             throw new Error(`Failed to fetch approved books: ${response.statusText}`);
+//         }
+//         return await response.json();
+//     } catch (error) {
+//         console.error("Error fetching approved books:", error);
+//         return [];
+//     }
+// };
+
+
+
+export async function getAllBooksApproved(params) {
+    try {
+        const query = new URLSearchParams({
+            search: params?.search || '',
+            category: params?.category || 'all',
+            maxFee: params?.maxFee || '150',
+            availability: params?.availability || 'all',
+            page: params?.page || 1,
+            limit: params?.limit || 8
+        });
+
+   
+        const res = await fetch(`${baseUrl}/api/books/approved?${query.toString()}`, {
+            cache: 'no-store'
+        });
+
+        if (!res.ok) {
+            throw new Error("Failed to fetch from backend API");
+        }
+
+        return await res.json();
+    } catch (error) {
+        console.error("Error in getAllBooksApproved Server Action:", error);
+        
+        return { books: [], totalPages: 1, currentPage: 1, totalItems: 0 };
+    }
 }
 
 
 export const getBookDetails = async (id) => {
-    const bookDetails = await fetch(`${baseUrl}/api/books/${id}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
+    // return fetchWithAuth(`${baseUrl}/api/books/${id}`, { method: 'GET' });
+    // without token, public endpoint
+    try {
+        const response = await fetch(`${baseUrl}/api/books/${id}`, { method: 'GET' });
+        if (!response.ok) {
+            throw new Error(`Failed to fetch book details for ID ${id}: ${response.statusText}`);
         }
-    });
-    return bookDetails.json();
-}
+        return await response.json();
+    } catch (error) {
+        console.error(`Error fetching book details for ID ${id}:`, error);
+        return null;
+    }
+};
+
 export const updateBookAvailability = async (bookId, newStatus) => {
     try {
-        const response = await fetch(`${baseUrl}/api/books/${bookId}/availability`, {
+        return await fetchWithAuth(`${baseUrl}/api/books/${bookId}/availability`, {
             method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ status: newStatus }),
+            body: JSON.stringify({ availability: newStatus }),
         });
-        const result = await response.json();
-        return result;
     } catch (error) {
         console.error('Error updating book availability:', error);
         throw error;
@@ -66,123 +117,89 @@ export const updateBookAvailability = async (bookId, newStatus) => {
 
 export const DeleteBook = async (bookId) => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/books/${bookId}`, {
+        const data = await fetchWithAuth(`${baseUrl}/api/books/${bookId}`, {
             method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
         });
-        const data = await res.json();
         console.log("Delete response:", data);
-        return data; // Return the response data for further handling if needed
+        return data;
     } catch (error) {
         console.error('Error deleting book:', error);
-        throw error; // Rethrow the error for further handling if needed
+        throw error;
     }
-   
-}
+};
 
 
 export const getAllAdminPendingBooks = async () => {
-    const allAdminPendingBooksResponse = await fetch(`${baseUrl}/api/admin/pending-books`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const allAdminPendingBooks = await allAdminPendingBooksResponse.json();
-    return allAdminPendingBooks;
-}
-
+    return fetchWithAuth(`${baseUrl}/api/admin/pending-books`, { method: 'GET' });
+};
 
 export const getAllPaymentData = async () => {
-    const allPaymentDataResponse = await fetch(`${baseUrl}/api/payments`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const allPaymentData = await allPaymentDataResponse.json();
-    return allPaymentData;
+    return fetchWithAuth(`${baseUrl}/api/payments`, { method: 'GET' });
 };
+
 
 export const getPaymentlibrarian = async () => {
-    const userPaymentStatus = await fetch(`${baseUrl}/api/payment-status/librarian?librarianId=${userId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const paymentStatus = await userPaymentStatus.json();
-    return paymentStatus;
+    const user = await getUser();
+    const userId = user?.id;
+
+    if (!userId) return null;
+
+    return fetchWithAuth(`${baseUrl}/api/payment-status/librarian?librarianId=${userId}`, { method: 'GET' });
 };
 
-
 export const getPaymentUser = async () => {
-    const userPaymentStatus = await fetch(`${baseUrl}/api/payment-status/user?userId=${userId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const paymentStatus = await userPaymentStatus.json();
-    return paymentStatus;
+    const user = await getUser();
+    const userId = user?.id;
+
+    if (!userId) return null;
+
+    return fetchWithAuth(`${baseUrl}/api/payment-status/user?userId=${userId}`, { method: 'GET' });
 };
 
 
 export const getReviewsByBookId = async (bookId) => {
-    const reviewsResponse = await fetch(`${baseUrl}/api/reviews/${bookId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const reviews = await reviewsResponse.json();
-    return reviews;
+    // return fetchWithAuth(`${baseUrl}/api/reviews/${bookId}`, { method: 'GET' });
+    // without token, public endpoint
+    try {
+        const response = await fetch(`${baseUrl}/api/reviews/${bookId}`, { method: 'GET' });
+        if (!response.ok) {
+            throw new Error(`Failed to fetch reviews for book ID ${bookId}: ${response.statusText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error(`Error fetching reviews for book ID ${bookId}:`, error);
+        return [];
+    }
 };
+
+
 export const checkCommentableByBookId = async (bookId) => {
-    const reviewsResponse = await fetch(`${baseUrl}/api/payment-status//${bookId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const reviews = await reviewsResponse.json();
-    return reviews;
+    return fetchWithAuth(`${baseUrl}/api/payment-status/${bookId}`, { method: 'GET' });
 };
+
 
 export const checkCommentable = async (data) => {
     const { bookId, userId } = data;
-    const commentableResponse = await fetch(`${baseUrl}/api/commentable/${bookId}/userId?userId=${userId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const commentable = await commentableResponse.json();
-    return commentable;
+    // return fetchWithAuth(`${baseUrl}/api/commentable/${bookId}/userId?userId=${userId}`, { method: 'GET' });
+    // without token, public endpoint
+    try {
+        const response = await fetch(`${baseUrl}/api/commentable/${bookId}/userId?userId=${userId}`, { method: 'GET' });
+        if (!response.ok) {
+            throw new Error(`Failed to check commentable for book ID ${bookId} and user ID ${userId}: ${response.statusText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error(`Error checking commentable for book ID ${bookId} and user ID ${userId}:`, error);
+        return { commentable: false };
+    }
 };
+
 
 export const getUserReviews = async (userId) => {
-    const reviewsResponse = await fetch(`${baseUrl}/api/reviews/user/${userId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const reviews = await reviewsResponse.json();
-    return reviews;
+    return fetchWithAuth(`${baseUrl}/api/reviews/user/${userId}`, { method: 'GET' });
 };
-
 
 
 export const getAllUser = async () => {
-    const allUsersResponse = await fetch(`${baseUrl}/api/users`, {
-        method: 'GET',  
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const allUsers = await allUsersResponse.json();
-    return allUsers;
-}
+    return fetchWithAuth(`${baseUrl}/api/users`, { method: 'GET' });
+};

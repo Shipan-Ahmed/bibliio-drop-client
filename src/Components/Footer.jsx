@@ -66,8 +66,8 @@ export default function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/browse" className="text-white/70 hover:text-secondary transition-colors duration-200">
-                                    Browse Book Library
+                                <Link href="/browse-books" className="text-white/70 hover:text-secondary transition-colors duration-200">
+                                    Browse Books
                                 </Link>
                             </li>
                             <li>

@@ -1,4 +1,4 @@
-
+export const dynamic = 'force-dynamic';
 import DeliveryTable from '@/src/Components/LibraranDashboard/DeliveryTable';
 import { getPaymentlibrarian } from '@/src/lib/action/api';
 const DeliveryPages = async () => {

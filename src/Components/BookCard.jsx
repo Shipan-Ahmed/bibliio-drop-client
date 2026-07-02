@@ -33,8 +33,8 @@ const BookCard = ({ book }) => {
                     height={200}
             
                 />
-                {/* Subtle dark overlay fade on cover hover */}
-                {/* <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" /> */}
+                
+                 
             </div>
 
             {/* Book Content / Context Details */}

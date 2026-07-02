@@ -1,11 +1,18 @@
-
+export const dynamic = 'force-dynamic';
 import Approval from '@/src/Components/AdminDashboard/Approval';
-import { getAllAdminPendingBooks } from '@/src/lib/action/api';
+
 
 const ApprovalQueue = async () => {
     
-    const allAdminPendingBooks = await getAllAdminPendingBooks() || [];
-  
+    // const allAdminPendingBooks = await getAllAdminPendingBooks() || [];
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/pending-books`, {
+        cache: 'no-store', // Ensure fresh data on each request
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const allAdminPendingBooks = await res.json();
 
     console.log("All pending books for admin approval:", allAdminPendingBooks);
 

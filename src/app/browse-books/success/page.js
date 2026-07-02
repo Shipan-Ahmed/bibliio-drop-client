@@ -74,7 +74,6 @@ export default async function Success({ searchParams }) {
                         </p>
                     </div>
 
-                    {/* Order Meta Brief Receipt */}
                     <div className="w-full bg-gray-50/80 border border-gray-100 rounded-2xl p-4 text-left space-y-2.5 text-sm">
                         <div className="flex justify-between items-center">
                             <span className="text-gray-400 font-medium">Amount Paid</span>

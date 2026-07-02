@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { getPaymentUser } from '@/src/lib/action/api';
 import React from 'react';
 import { FiBookOpen } from 'react-icons/fi';

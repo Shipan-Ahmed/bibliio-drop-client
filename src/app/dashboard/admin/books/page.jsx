@@ -1,4 +1,4 @@
-
+export const dynamic = 'force-dynamic';
 import ManageBooks from '@/src/Components/AdminDashboard/ManageBooks';
 import { getAllBooks } from '@/src/lib/action/api';
 

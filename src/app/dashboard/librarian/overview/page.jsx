@@ -1,4 +1,5 @@
-import LibrarianChart from '@/src/Components/LibrarianChart'; 
+export const dynamic = 'force-dynamic';
+import LibrarianChart from '@/src/Components/LibrarianChart';
 import { getData, getPaymentlibrarian } from '@/src/lib/action/api';
 import { getUser } from '@/src/lib/userSession';
 import React from 'react';
@@ -6,24 +7,28 @@ import { CiDeliveryTruck } from 'react-icons/ci';
 import { FaDollarSign } from 'react-icons/fa';
 import { FiBookOpen } from 'react-icons/fi';
 
+
+
+
 const LibrarianOverview = async () => {
     const user = await getUser();
     const userId = user?.id;
 
-    const MyBooks = await getPaymentlibrarian(userId);
-    const totalBooksListed = await getData() || []; 
 
-    const PendingDeliveries = MyBooks.filter(book => book.status === 'pending delivery').length;
-    const TotalEarning = MyBooks.reduce((total, book) => total + parseInt(book.deliveryfee || book.deliveryFee || 0), 0);
+    const MyBooks = await getPaymentlibrarian(userId) || [];
+    const totalBooksListed = await getData() || [];
+
+    const PendingDeliveries = MyBooks.filter(book => book?.status === 'pending delivery').length;
+    const TotalEarning = MyBooks.reduce((total, book) => total + parseInt(book?.deliveryfee || book?.deliveryFee || 0), 0);
     const totalListedBooks = totalBooksListed.length;
 
     const monthlyCount = {};
 
     totalBooksListed.forEach((book) => {
-        if (book.createdAt) {
+        if (book?.createdAt) {
             try {
                 const date = new Date(book.createdAt);
-                const monthName = date.toLocaleString('en-US', { month: 'short' }); 
+                const monthName = date.toLocaleString('en-US', { month: 'short' });
 
                 if (monthName && monthName !== 'Invalid Date') {
                     monthlyCount[monthName] = (monthlyCount[monthName] || 0) + 1;
@@ -33,6 +38,7 @@ const LibrarianOverview = async () => {
             }
         }
     });
+
     const formattedChartData = Object.keys(monthlyCount).map((month) => ({
         month: month,
         books: monthlyCount[month]
@@ -68,7 +74,6 @@ const LibrarianOverview = async () => {
                 </div>
             </div>
 
-           
             <div className="mt-4 max-w-4xl">
                 <LibrarianChart data={formattedChartData} />
             </div>

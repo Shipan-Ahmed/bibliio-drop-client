@@ -1,144 +1,407 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 📚 BiblioDrop – Online Book Delivery Management System
 
-## Getting Started
+<p align="center">
+  <img src="https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react" />
+  <img src="https://img.shields.io/badge/Node.js-Backend-339933?style=for-the-badge&logo=node.js" />
+  <img src="https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb" />
+  <img src="https://img.shields.io/badge/Express.js-API-000000?style=for-the-badge&logo=express" />
+</p>
 
-First, run the development server:
+<p align="center">
+A modern full-stack online book delivery platform that connects readers with local libraries and independent book owners. Users can browse books, request doorstep delivery, make secure payments, leave verified reviews, and track deliveries through role-based dashboards.
+</p>
+
+---
+
+## 🌐 Live Website
+
+🔗 **Live Site:** https://biblio-drop-client-alpha.vercel.app
+
+---
+
+## 💻 GitHub Repository
+
+### Client
+ https://github.com/Shipan-Ahmed/bibliio-drop-client
+
+### Server
+https://github.com/Shipan-Ahmed/bilio-drop-server
+
+---
+
+# 📖 Project Overview
+
+**BiblioDrop** is an Online Book Delivery Management System where readers can explore books from multiple libraries, request home delivery, securely pay delivery fees, write verified reviews, and manage their reading history.
+
+The platform provides three separate dashboards:
+
+- 👤 Reader
+- 📚 Librarian
+- 🛠️ Admin
+
+Each role has dedicated features and permissions.
+
+---
+
+# ✨ Key Features
+
+### 🔐 Authentication
+
+- Better Auth Authentication
+- Email & Password Login
+- Google Social Login
+- JWT Protected Routes
+- Role-Based Authorization
+- Secure Cookie Authentication
+
+---
+
+### 📚 Book Management
+
+- Browse all available books
+- Search books by title
+- Filter by category
+- Filter by delivery fee
+- Availability filtering
+- Book details page
+- Responsive book grid
+
+---
+
+### 🚚 Delivery System
+
+- Request doorstep delivery
+- Stripe Payment Integration
+- Delivery history tracking
+- Delivery status updates
+- Pending → Dispatched → Delivered workflow
+
+---
+
+### ⭐ Review System
+
+- Verified Review System
+- Rating & Comments
+- Edit/Delete own reviews
+- Only delivered users can review
+
+---
+
+### 📊 Dashboard
+
+#### 👤 Reader Dashboard
+
+- Reading statistics
+- Delivery history
+- Reading list
+- Review management
+- Spending overview
+
+#### 📚 Librarian Dashboard
+
+- Add books
+- Update inventory
+- Delivery management
+- Earnings statistics
+- Book analytics
+
+#### 🛠️ Admin Dashboard
+
+- User management
+- Book approval queue
+- Platform analytics
+- Revenue overview
+- Transaction management
+
+---
+
+### 📈 Data Visualization
+
+- Dashboard Charts
+- Pie Charts
+- Statistics Cards
+- Analytics Overview
+
+---
+
+### 📱 Responsive Design
+
+- Mobile Friendly
+- Tablet Friendly
+- Desktop Optimized
+- Modern UI
+- Smooth Animations
+- Framer Motion Effects
+
+---
+
+### 🚀 Additional Features
+
+- Image Upload (imgBB)
+- Skeleton Loading
+- Global Loading Spinner
+- Error Boundary
+- Custom 404 Page
+- Toast Notifications
+- Dark Mode (Optional)
+- Wishlist (Optional)
+
+---
+
+# 🛠️ Tech Stack
+
+## Frontend
+
+- React
+- React Router
+- Tailwind CSS
+- DaisyUI
+- Framer Motion
+- Axios
+- React Hook Form
+- TanStack Query
+- Better Auth
+- Stripe
+- Recharts
+- React Icons
+- SweetAlert2
+- React Hot Toast
+
+---
+
+## Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- JWT
+- Cookie Parser
+- CORS
+- dotenv
+- Stripe SDK
+- Better Auth Server
+
+---
+
+## Database
+
+- MongoDB Atlas
+
+---
+
+## Authentication
+
+- Better Auth
+- JWT
+- Google OAuth
+
+---
+
+## Image Hosting
+
+- imgBB API
+
+---
+
+## Payment
+
+- Stripe Payment Gateway
+
+---
+
+# 📂 Project Structure
+
+```
+client/
+│
+├── src/
+│   ├── Components/
+│   ├── Pages/
+│   ├── Layouts/
+│   ├── Routes/
+│   ├── Hooks/
+│   ├── Context/
+│   ├── API/
+│   ├── Utils/
+│   └── Assets/
+│
+└── public/
+
+server/
+│
+├── routes/
+├── middleware/
+├── controllers/
+├── utils/
+├── config/
+└── index.js
+```
+
+---
+
+# ⚙️ Environment Variables
+
+
+
+
+---
+
+# 📦 NPM Packages Used
+
+## Frontend
+
+```txt
+react
+react-dom
+react-router-dom
+axios
+tailwindcss
+daisyui
+framer-motion
+react-hook-form
+@tanstack/react-query
+better-auth
+react-icons
+react-hot-toast
+sweetalert2
+recharts
+stripe
+@stripe/react-stripe-js
+@stripe/stripe-js
+```
+
+---
+
+## Backend
+
+```txt
+express
+mongodb
+cors
+dotenv
+jsonwebtoken
+cookie-parser
+better-auth
+stripe
+multer
+bcryptjs
+```
+
+---
+
+# 🔐 User Roles
+
+## 👤 Reader
+
+- Browse Books
+- Request Delivery
+- Pay Delivery Fee
+- Track Deliveries
+- Leave Reviews
+- Manage Reading List
+
+---
+
+## 📚 Librarian
+
+- Add Books
+- Manage Inventory
+- Update Delivery Status
+- View Earnings
+- Manage Requests
+
+---
+
+## 🛠️ Admin
+
+- Manage Users
+- Approve Books
+- Delete Books
+- Manage Transactions
+- Platform Analytics
+
+---
+
+# 🎯 Future Improvements
+
+- Email Notifications
+- Real-time Delivery Tracking
+- AI Book Recommendation
+- Chat Between Reader & Librarian
+- QR Code Delivery Verification
+- Mobile Application
+
+---
+
+# 🚀 Installation
+
+## Clone Client
+
+```bash
+git clone https://github.com/Shipan-Ahmed/bibliio-drop-client
+```
+
+```bash
+cd client
+```
+
+```bash
+npm install
+```
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Clone Server
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+git clone https://github.com/Shipan-Ahmed/bilio-drop-server
+```
 
-## Learn More
+```bash
+cd server
+```
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+# 👨‍💻 Admin Credentials
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```text
+Email:
+admin@gmail.com
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Password: 12345678
+```
 
+---
 
-Button Type	Purpose / Action	Recommended Color Pairing	Tailwind CSS Classes
-Sign In	Primary Entry	Indigo / Royal Blue + White text	bg-indigo-600 text-white hover:bg-indigo-700
-Sign Up	Primary Conversion	Indigo / Royal Blue + White text	bg-indigo-600 text-white hover:bg-indigo-700
-Save	Success / Confirmation	Deep Emerald Green + White text	bg-emerald-600 text-white hover:bg-emerald-700
-Browse Here	Secondary Exploration	Clear/White background + Slate Border & Text	bg-white border border-slate-300 text-slate-700 hover:bg-slate-50
-Log Out	Neutral System Action	Muted Slate/Gray background + Dark Gray text	bg-slate-100 text-slate-700 hover:bg-slate-200
-Delete	Destructive Action	Crimson Red + White text	bg-red-600 text-white hover:bg-red-700
-💡 Design Alignment Strategy
-Sign In vs. Sign Up: Since both are primary actions, keep them in the same brand color family (e.g., Indigo). However, if they are on the same page together, make Sign In the solid button (bg-indigo-600) and Sign Up an outline style (border border-indigo-600 text-indigo-600) so they don't fight for attention.
+# 📄 License
 
-The "Browse Here" Look: This is a classic "Ghost" or "Outline" button. It shouldn't look heavy because it encourages exploration rather than finalizing a transaction.
+This project was developed for educational purposes as part of a Programming Hero assignment.
 
-Log Out vs. Delete: Always distinguish these two! Log Out is safe, so it gets a quiet, neutral gray. Delete is permanent, so the bright crimson red serves as a necessary visual warning.
+---
 
-🛠️ Quick UI Framework Shortcut
-If you are using your UI library, you can map them natively like this:
+# 🙋‍♂️ Developer
 
-Sign In / Sign Up / Save: btn btn-primary or btn btn-success
+**Shipan**
 
-Browse Here: btn btn-outline
+Software Engineer Aspirant
 
-Log Out: btn btn-neutral
+Competitive Programmer
 
-Delete: btn btn-error
+Full Stack Web Developer
 
+---
 
-
-
-
-
-1. Science Fiction
-Book Name: Automatic Noodle
-
-Author: Annalee Newitz
-
-Category: ScienceFiction
-
-Description: A smart, fast-paced cyberpunk tale set in a tech-driven future where automated systems and street-level tech operators collide over control of a city's network.
-
-Suggested Delivery Fee: 3.50
-
-2. Mystery & Thriller
-Book Name: Dear Debbie
-
-Author: Freida McFadden
-
-Category: Mystery
-
-Description: Debbie Mullen is an advice columnist who has reached her breaking point. A twisty, dark domestic thriller about what happens when an ordinary woman decides to stop being reasonable and takes matters into her own hands.
-
-Suggested Delivery Fee: 2.99
-
-3. Non-Fiction
-Book Name: Everything Is Tuberculosis
-
-Author: John Green
-
-Category: Non-Fiction
-
-Description: A compelling history of humanity's deadliest infection. The author blends deep scientific reporting with urgent global health questions, showing how human inequalities affect medical history.
-
-Suggested Delivery Fee: 4.00
-
-4. Fantasy
-Book Name: The Knight and the Moth
-
-Author: Rachel Gillig
-
-Category: Fantasy
-
-Description: A sweeping, gothic fantasy filled with dangerous magic, ancient curses, and a high-stakes romance that keeps you guessing until the final page.
-
-Suggested Delivery Fee: 3.25
-
-5. Romance
-Book Name: I Think They Love You
-
-Author: Julian Winters
-
-Category: Romance
-
-Description: A charming and heartwarming contemporary romantic comedy exploring modern relationships, secondary chances, and the beautiful chaos of finding true connection.
-
-Suggested Delivery Fee: 2.50
-
-6. History & Historical Fiction
-Book Name: The Last Witch
-
-Author: C. J. Cooke
-
-Category: History
-
-Description: Set against a haunting historical backdrop, this atmospheric tale explores local folk stories, systemic paranoia, and the resilient bonds of a family surviving a historical witch trial era.
-
-Suggested Delivery Fee: 3.75
-
-7. Science Fiction / Alternate History
-Book Name: Yesteryear
-
-Author: Caro Claire Burke
-
-Category: ScienceFiction
-
-Description: A modern social media influencer suddenly wakes up stuck in the brutal physical reality of 1855. She must figure out if it is a twisted reality TV show, a hoax, or genuine time travel.
-
-Suggested Delivery Fee: 3.00
+⭐ If you like this project, don't forget to give it a star!

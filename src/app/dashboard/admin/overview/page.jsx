@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import LibrarianChart from '@/src/Components/LibrarianChart';
 import CategoryPieChart from '@/src/Components/CategoryPieChart'; // 👈 নতুন পাই চার্টটি ইম্পোর্ট করুন
 import { getAllBooks, getAllUser } from '@/src/lib/action/api';

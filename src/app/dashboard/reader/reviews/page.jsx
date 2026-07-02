@@ -1,3 +1,5 @@
+
+export const dynamic = 'force-dynamic';
 import { getUserReviews } from '@/src/lib/action/api';
 import { getUser } from '@/src/lib/userSession';
 import React from 'react';
@@ -8,6 +10,7 @@ const MyReviewPage = async () => {
     const user = await getUser();
     const userId = user?.id;
 
+ 
     const myAllReview = await getUserReviews(userId) || [];
     console.log("My Reviews:", myAllReview);
 

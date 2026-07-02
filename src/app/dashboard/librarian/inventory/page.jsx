@@ -1,4 +1,4 @@
-
+export const dynamic = 'force-dynamic';
 import { getData } from '@/src/lib/action/api';
 import InventoryTable from '@/src/Components/LibraranDashboard/InventoryTable';
 

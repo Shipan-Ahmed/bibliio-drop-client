@@ -25,8 +25,7 @@ export default function HeroBanner() {
     };
 
     return (
-        <div className="relative w-full min-h-[75vh] sm:min-h-[85vh] bg-gradient-to-br from-primary via-[#13544a] to-primary text-white flex items-center overflow-hidden px-4 sm:px-8 md:px-16">
-
+        <div className="relative w-full min-h-[75vh] sm:min-h-[85vh] bg-gradient-to-br from-primary via-[#13544a] to-primary text-white flex items-center overflow-hidden px-4 sm:px-8 md:px-16" > 
             {/* Decorative Editorial Background Elements */}
             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#d4a373_1px,transparent_1px)] [background-size:16px_16px]"></div>
             <div className="absolute -top-24 -right-24 w-96 h-96 bg-secondary/20 rounded-full blur-3xl pointer-events-none"></div>

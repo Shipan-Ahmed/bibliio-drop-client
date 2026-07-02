@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import ManageUsersTable from '@/src/Components/ManageUsersTable';
 import { getUser } from '@/src/lib/userSession';
 import React from 'react';

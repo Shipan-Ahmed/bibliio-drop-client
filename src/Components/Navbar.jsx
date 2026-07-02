@@ -21,9 +21,9 @@ const Navbar = () => {
     const user = data?.user ;
     console.log('Navbar user:', user);
 
-    if(pathname.includes('/dashboard')) {
-        return null; // Don't render the navbar on dashboard pages
-    }
+    // if(pathname.includes('/dashboard')) {
+    //     return null; // Don't render the navbar on dashboard pages
+    // }
 
    
     const links = (

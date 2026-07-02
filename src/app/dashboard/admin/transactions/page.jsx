@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { getAllPaymentData } from '@/src/lib/action/api';
 import React from 'react';
 import { Table} from "@heroui/react";

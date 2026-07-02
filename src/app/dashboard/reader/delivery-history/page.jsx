@@ -1,10 +1,16 @@
+
+export const dynamic = 'force-dynamic';
 import { getPaymentUser } from '@/src/lib/action/api';
 import { Table } from '@heroui/react';
 import React from 'react';
 
+
+
 const DeliveryHistoryPage = async () => {
-    const allHistory = await getPaymentUser();
+    // 2. Added a fallback array (|| []) so that allHistory is never null or undefined
+    const allHistory = await getPaymentUser() || [];
     console.log("Fetched delivery history from API:", allHistory);
+
     return (
         <div className='flex flex-col gap-4 container mx-auto min-h-screen'>
             <h2 className="text-2xl font-bold text-neutral">Delivery History</h2>
@@ -27,16 +33,16 @@ const DeliveryHistoryPage = async () => {
                                 </Table.Header>
                                 <Table.Body>
                                     {
-                                        allHistory?.map((book, index) => {
+                                        allHistory.map((book, index) => {
                                             return (
                                                 <Table.Row key={index}>
-                                                    <Table.Cell>{book.title}</Table.Cell>
-                                                    <Table.Cell>{book.deliveryfee || book.deliveryFee} $</Table.Cell>
-                                                    <Table.Cell>{book.transactionId}</Table.Cell>
-                                                    <Table.Cell>{book.requestDate}</Table.Cell>
+                                                    <Table.Cell>{book?.title}</Table.Cell>
+                                                    <Table.Cell>{book?.deliveryfee || book?.deliveryFee} $</Table.Cell>
+                                                    <Table.Cell>{book?.transactionId}</Table.Cell>
+                                                    <Table.Cell>{book?.requestDate}</Table.Cell>
                                                     <Table.Cell>
-                                                        <div className={`badge ${book.status === 'pending delivery' ? 'badge-primary' : book.status === 'Dispatched' ? 'badge-secondary' : 'badge-success'}`}>
-                                                            {book.status}
+                                                        <div className={`badge ${book?.status === 'pending delivery' ? 'badge-primary' : book?.status === 'Dispatched' ? 'badge-secondary' : 'badge-success'}`}>
+                                                            {book?.status}
                                                         </div>
                                                     </Table.Cell>
                                                 </Table.Row>

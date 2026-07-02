@@ -2,7 +2,7 @@ import { getBookDetails } from '@/src/lib/action/api';
 import { getUser } from '@/src/lib/userSession';
 import { redirect } from 'next/navigation';
 import { Button } from '@heroui/react';
-import { updateBookAction } from '@/src/lib/action/bookActions'; // সার্ভার অ্যাকশন (ধাপ ৩ এ তৈরি করব)
+import { updateBookAction } from '@/src/lib/action/bookActions'; 
 
 const EditBookPage = async ({ params }) => {
     const user = await getUser();
@@ -15,18 +15,18 @@ const EditBookPage = async ({ params }) => {
         return <div className="text-center p-10 text-red-500">Book not found!</div>;
     }
 
-    // সিকিউরিটি চেক: লগইন করা ইউজারই কি এই বইয়ের লাইব্রেরিয়ান? না হলে ফেরত পাঠিয়ে দিন।
+    
     if (book.librarianId !== userId) {
         return redirect(`/browse-books/${id}`);
     }
 
     return (
-        <div className="min-h-screen max-w-xl mx-auto p-6 bg-white shadow-md rounded-2xl my-10">
+        <div className="min-h-screen max-w-7xl mx-auto p-6 bg-white shadow-md rounded-2xl my-10">
             <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Edit Book Details</h1>
 
-            {/* ফর্ম অ্যাকশনে আমরা ধাপ ৩-এর সার্ভার অ্যাকশনটি ব্যবহার করব */}
+           
             <form action={updateBookAction} className="space-y-4">
-                {/* হিডেন ফিল্ড আকারে বইয়ের আইডি পাস করা হচ্ছে */}
+             
                 <input type="hidden" name="id" value={id} />
 
                 <div>
